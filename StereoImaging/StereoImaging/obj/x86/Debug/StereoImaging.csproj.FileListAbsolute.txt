@@ -1,0 +1,27 @@
+H:\Live Mesh\Visual Studio 2010\Projects\StereoImaging\StereoImaging\obj\x86\Debug\ResolveAssemblyReference.cache
+H:\Live Mesh\Visual Studio 2010\Projects\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.Form1.resources
+H:\Live Mesh\Visual Studio 2010\Projects\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.Properties.Resources.resources
+H:\Live Mesh\Visual Studio 2010\Projects\StereoImaging\StereoImaging\obj\x86\Debug\GenerateResource.read.1.tlog
+H:\Live Mesh\Visual Studio 2010\Projects\StereoImaging\StereoImaging\obj\x86\Debug\GenerateResource.write.1.tlog
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\bin\StereoImaging.exe
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\bin\StereoImaging.pdb
+H:\Live Mesh\Visual Studio 2010\Projects\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.exe
+H:\Live Mesh\Visual Studio 2010\Projects\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.pdb
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\Emgu.CV.Example\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.exe
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\Emgu.CV.Example\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.pdb
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\Emgu.CV.Example\Examples\EMGU x64\bin\StereoImaging.exe
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\Emgu.CV.Example\Examples\EMGU x64\bin\StereoImaging.pdb
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\Emgu.CV.Example\StereoImaging\StereoImaging\obj\x86\Debug\ResolveAssemblyReference.cache
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\Emgu.CV.Example\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.Form1.resources
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\Emgu.CV.Example\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.Properties.Resources.resources
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\Emgu.CV.Example\StereoImaging\StereoImaging\obj\x86\Debug\GenerateResource.read.1.tlog
+H:\Live Mesh\Visual Studio 2010\Projects\Examples\EMGU x64\Emgu.CV.Example\StereoImaging\StereoImaging\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\terril\Desktop\Dealt_Vision_Solution\bin\StereoImaging.exe
+C:\Users\terril\Desktop\Dealt_Vision_Solution\bin\StereoImaging.pdb
+C:\Users\terril\Desktop\Dealt_Vision_Solution\StereoImaging\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.csprojResolveAssemblyReference.cache
+C:\Users\terril\Desktop\Dealt_Vision_Solution\StereoImaging\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.Form1.resources
+C:\Users\terril\Desktop\Dealt_Vision_Solution\StereoImaging\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.Properties.Resources.resources
+C:\Users\terril\Desktop\Dealt_Vision_Solution\StereoImaging\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.csproj.GenerateResource.Cache
+C:\Users\terril\Desktop\Dealt_Vision_Solution\StereoImaging\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.csproj.CoreCompileInputs.cache
+C:\Users\terril\Desktop\Dealt_Vision_Solution\StereoImaging\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.exe
+C:\Users\terril\Desktop\Dealt_Vision_Solution\StereoImaging\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.pdb
