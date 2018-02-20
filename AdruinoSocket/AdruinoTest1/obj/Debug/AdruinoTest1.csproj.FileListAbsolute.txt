@@ -1,0 +1,20 @@
+C:\Users\tharknes\documents\visual studio 2017\Projects\AdruinoTest1\AdruinoTest1\bin\Debug\AdruinoTest1.exe.config
+C:\Users\tharknes\documents\visual studio 2017\Projects\AdruinoTest1\AdruinoTest1\bin\Debug\AdruinoTest1.exe
+C:\Users\tharknes\documents\visual studio 2017\Projects\AdruinoTest1\AdruinoTest1\bin\Debug\AdruinoTest1.pdb
+C:\Users\tharknes\documents\visual studio 2017\Projects\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.csprojResolveAssemblyReference.cache
+C:\Users\tharknes\documents\visual studio 2017\Projects\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.Form1.resources
+C:\Users\tharknes\documents\visual studio 2017\Projects\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.Properties.Resources.resources
+C:\Users\tharknes\documents\visual studio 2017\Projects\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.csproj.GenerateResource.Cache
+C:\Users\tharknes\documents\visual studio 2017\Projects\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.csproj.CoreCompileInputs.cache
+C:\Users\tharknes\documents\visual studio 2017\Projects\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.exe
+C:\Users\tharknes\documents\visual studio 2017\Projects\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.pdb
+C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\bin\Debug\AdruinoTest1.exe.config
+C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\bin\Debug\AdruinoTest1.exe
+C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\bin\Debug\AdruinoTest1.pdb
+C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.csprojResolveAssemblyReference.cache
+C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.Form1.resources
+C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.Properties.Resources.resources
+C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.csproj.GenerateResource.Cache
+C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.csproj.CoreCompileInputs.cache
+C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.exe
+C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.pdb
