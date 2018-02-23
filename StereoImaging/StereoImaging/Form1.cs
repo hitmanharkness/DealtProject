@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 //Extra
@@ -24,8 +25,8 @@ namespace StereoImaging
     public partial class Form1 : Form
     {
         #region Devices
-        Capture _Capture1;
-        Capture _Capture2;
+        VideoCapture _Capture1;
+        VideoCapture _Capture2;
         #endregion
         
         #region Image Processing
@@ -105,12 +106,14 @@ namespace StereoImaging
             else if (WebCams.Length >= 2)
             {
                 if (WebCams.Length > 2) MessageBox.Show("More than 2 cameras detected. Stero Imaging will be performed using " + WebCams[0].Device_Name + " and " + WebCams[1].Device_Name);
-                _Capture1 = new Capture(WebCams[0].Device_ID);
-                _Capture2 = new Capture(WebCams[1].Device_ID);
+                //_Capture1 = new VideoCapture(WebCams[0].Device_ID);
+                //_Capture2 = new VideoCapture(WebCams[1].Device_ID);
+                _Capture1 = new VideoCapture(0);
+                _Capture2 = new VideoCapture(1);
                 //We will only use 1 frame ready event this is not really safe but it fits the purpose
                 _Capture1.ImageGrabbed += ProcessFrame;
                 //_Capture2.Start(); //We make sure we start Capture device 2 first
-                _Capture1.Start();
+                ///////////////_Capture1.Start();
             }
         }
 
@@ -123,9 +126,9 @@ namespace StereoImaging
         {
             #region Frame Aquasition
             //Aquire the frames or calculate two frames from one camera
-            frame_S1 = _Capture1.RetrieveBgrFrame();
+            ///////////frame_S1 = _Capture1.RetrieveBgrFrame();
             Gray_frame_S1 = frame_S1.Convert<Gray,Byte>();
-            frame_S2 = _Capture2.RetrieveBgrFrame();
+            ///////////frame_S2 = _Capture2.RetrieveBgrFrame();
             Gray_frame_S2 = frame_S2.Convert<Gray,Byte>();
             #endregion
 
@@ -133,8 +136,8 @@ namespace StereoImaging
             if (currentMode == Mode.SavingFrames)
             {
                 //Find the chessboard in bothe images
-                corners_Left = CameraCalibration.FindChessboardCorners(Gray_frame_S1, patternSize, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH);
-                corners_Right = CameraCalibration.FindChessboardCorners(Gray_frame_S2, patternSize, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH);
+                /////////////corners_Left = CameraCalibration.FindChessboardCorners(Gray_frame_S1, patternSize, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH);
+                /////////////corners_Right = CameraCalibration.FindChessboardCorners(Gray_frame_S2, patternSize, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH);
 
                 //we use this loop so we can show a colour image rather than a gray: //CameraCalibration.DrawChessboardCorners(Gray_Frame, patternSize, corners);
                 //we we only do this is the chessboard is present in both images
@@ -198,20 +201,27 @@ namespace StereoImaging
                 }
                 //If Emgu.CV.CvEnum.CALIB_TYPE == CV_CALIB_USE_INTRINSIC_GUESS and/or CV_CALIB_FIX_ASPECT_RATIO are specified, some or all of fx, fy, cx, cy must be initialized before calling the function
                 //if you use FIX_ASPECT_RATIO and FIX_FOCAL_LEGNTH options, these values needs to be set in the intrinsic parameters before the CalibrateCamera function is called. Otherwise 0 values are used as default.
-                CameraCalibration.StereoCalibrate(corners_object_Points, corners_points_Left, corners_points_Right, IntrinsicCam1, IntrinsicCam2, frame_S1.Size,
-                                                                 Emgu.CV.CvEnum.CALIB_TYPE.DEFAULT, new MCvTermCriteria(0.1e5), 
-                                                                 out EX_Param, out fundamental, out essential);
+                
+                
+                ////////////////////////////////////
+                //CameraCalibration.StereoCalibrate(corners_object_Points, corners_points_Left, corners_points_Right, IntrinsicCam1, IntrinsicCam2, frame_S1.Size,
+                //                                                 Emgu.CV.CvEnum.CALIB_TYPE.DEFAULT, new MCvTermCriteria(0.1e5), 
+                //                                                 out EX_Param, out fundamental, out essential);
+
+
+
+
                 MessageBox.Show("Intrinsic Calculation Complete"); //display that the mothod has been succesful
                 //currentMode = Mode.Calibrated;
 
                 //Computes rectification transforms for each head of a calibrated stereo camera.
-                CvInvoke.cvStereoRectify(IntrinsicCam1.IntrinsicMatrix, IntrinsicCam2.IntrinsicMatrix,
-                                         IntrinsicCam1.DistortionCoeffs, IntrinsicCam2.DistortionCoeffs,
-                                         frame_S1.Size,
-                                         EX_Param.RotationVector.RotationMatrix, EX_Param.TranslationVector,
-                                         R1, R2, P1, P2, Q,
-                                         Emgu.CV.CvEnum.STEREO_RECTIFY_TYPE.DEFAULT, 0,
-                                         frame_S1.Size, ref Rec1, ref Rec2);
+                //CvInvoke.cvStereoRectify(IntrinsicCam1.IntrinsicMatrix, IntrinsicCam2.IntrinsicMatrix,
+                //                         IntrinsicCam1.DistortionCoeffs, IntrinsicCam2.DistortionCoeffs,
+                //                         frame_S1.Size,
+                //                         EX_Param.RotationVector.RotationMatrix, EX_Param.TranslationVector,
+                //                         R1, R2, P1, P2, Q,
+                //                         Emgu.CV.CvEnum.STEREO_RECTIFY_TYPE.DEFAULT, 0,
+                //                         frame_S1.Size, ref Rec1, ref Rec2);
 
                 //This will Show us the usable area from each camera
                 MessageBox.Show("Left: " + Rec1.ToString() +  " \nRight: " + Rec2.ToString());
@@ -299,10 +309,11 @@ namespace StereoImaging
             //Set globally for ease
             //bool fullDP = true;
 
-            using (StereoSGBM stereoSolver = new StereoSGBM(minDispatities, numDisparities, SAD, P1, P2, disp12MaxDiff, PreFilterCap, UniquenessRatio, Speckle, SpeckleRange, fullDP))
+            using (StereoSGBM stereoSolver = new StereoSGBM(minDispatities, numDisparities, SAD, P1, P2, disp12MaxDiff, PreFilterCap, UniquenessRatio, Speckle, SpeckleRange, 0))
             //using (StereoBM stereoSolver = new StereoBM(Emgu.CV.CvEnum.STEREO_BM_TYPE.BASIC, 0))
             {
-                stereoSolver.FindStereoCorrespondence(left, right, disparityMap);//Computes the disparity map using: 
+                //////////////////stereoSolver.FindStereoCorrespondence(left, right, disparityMap);//Computes the disparity map using: 
+
                 /*GC: graph cut-based algorithm
                   BM: block matching algorithm
                   SGBM: modified H. Hirschmuller algorithm HH08*/
