@@ -18,12 +18,35 @@ using Emgu.Util;
 
 //DiresctShow
 using DirectShowLib;
-
+using Emgu.CV.CvEnum;
+using Emgu.CV.Util;
 
 namespace StereoImaging
 {
     public partial class Form1 : Form
     {
+        /// CAMERA CAPTURE EXAMPLE
+        private Mat _frame2;
+        private Mat _frame1;
+        private Mat _grayFrame1;
+        private Mat _grayFrame2;
+        private bool _find1;
+        private bool _find2;
+
+        private Size _patternSize;  //size of chess board to be detected
+        VectorOfPointF _corners1 = new VectorOfPointF(); //corners found from chessboard
+        VectorOfPointF _corners2 = new VectorOfPointF(); //corners found from chessboard
+        static Mat[] _frameArrayBuffer;
+        int _frameBufferSavepoint;
+        int _width; //width of chessboard no. squares in width - 1
+        int _height; // heght of chess board no. squares in heigth - 1
+        private float _squareSize;
+
+
+
+
+
+        /// STEREO IMAGING EXAMPLE
         #region Devices
         VideoCapture _Capture1;
         VideoCapture _Capture2;
@@ -105,17 +128,32 @@ namespace StereoImaging
             }
             else if (WebCams.Length >= 2)
             {
-                if (WebCams.Length > 2) MessageBox.Show("More than 2 cameras detected. Stero Imaging will be performed using " + WebCams[0].Device_Name + " and " + WebCams[1].Device_Name);
+                //if (WebCams.Length > 2) MessageBox.Show("More than 2 cameras detected. Stero Imaging will be performed using " + WebCams[0].Device_Name + " and " + WebCams[1].Device_Name);
                 //_Capture1 = new VideoCapture(WebCams[0].Device_ID);
                 //_Capture2 = new VideoCapture(WebCams[1].Device_ID);
                 _Capture1 = new VideoCapture(0);
                 _Capture2 = new VideoCapture(1);
                 //We will only use 1 frame ready event this is not really safe but it fits the purpose
                 _Capture1.ImageGrabbed += ProcessFrame;
-                //_Capture2.Start(); //We make sure we start Capture device 2 first
-                ///////////////_Capture1.Start();
+                _Capture2.Start(); //We make sure we start Capture device 2 first
+                _Capture1.Start();
             }
+
+            //////////// CAMERA CAPTURE EXAMPLE
+            _frame1 = new Mat();
+            _frame2 = new Mat();
+            _grayFrame1 = new Mat();
+            _grayFrame2 = new Mat();
+            _frameArrayBuffer = new Mat[(int) 10]; //???????????????????????????????????????????
+            _frameBufferSavepoint = 0;
+
+            _width = (int) 9; //width of chessboard no. squares in width - 1
+            _height = (int) 6; // heght of chess board nos. squares in heigth - 1
+            _squareSize = (float) 4.72; 
+            _patternSize = new Size(_width, _height); //size of chess board to be detected
+
         }
+
 
         /// <summary>
         /// Is called to process frame from camera
@@ -124,23 +162,85 @@ namespace StereoImaging
         /// <param name="arg"></param>
         private void ProcessFrame(object sender, EventArgs arg)
         {
+
+            /////////////////////// CAPTURE /////////////////////////////////////////////////////////////////////
+
+
+            //// THIS IS THE EMGU 3.4 CAMERA CAPTURE EXAMPLE
+            /// /// ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (_Capture1 != null && _Capture1.Ptr != IntPtr.Zero)
+            {
+                _Capture1.Retrieve(_frame1, 0);
+                CvInvoke.CvtColor(_frame1, _grayFrame1, ColorConversion.Bgr2Gray);
+            }
+            if (_Capture2 != null && _Capture2.Ptr != IntPtr.Zero)
+            {
+                _Capture2.Retrieve(_frame2, 0);
+                CvInvoke.CvtColor(_frame2, _grayFrame2, ColorConversion.Bgr2Gray);
+            }
+
+
+            //// THIS IS ALL THE STEREO IMAGING EXAMPLE 
+            /// ////////////////////////////////////////////////////////////////////////////////////////////////
             #region Frame Aquasition
             //Aquire the frames or calculate two frames from one camera
-            ///////////frame_S1 = _Capture1.RetrieveBgrFrame();
-            Gray_frame_S1 = frame_S1.Convert<Gray,Byte>();
+            ///////////frame_S1 = _Capture1.RetrieveBgrFrame(); // This no longer exists.
+            ///////////Gray_frame_S1 = frame_S1.Convert<Gray,Byte>();
             ///////////frame_S2 = _Capture2.RetrieveBgrFrame();
-            Gray_frame_S2 = frame_S2.Convert<Gray,Byte>();
+            ///////////Gray_frame_S2 = frame_S2.Convert<Gray,Byte>();
             #endregion
+
+
+
+
+
+            /////////////////////// CHESS BOARD CALIBRATION /////////////////////////////////////////////////////////////////////
 
             #region Saving Chessboard Corners in Buffer
             if (currentMode == Mode.SavingFrames)
             {
+                //////// CAMERA CALIBRATION EXAMPLE ///////////////////////////////////////////////////////
+                _find1 = CvInvoke.FindChessboardCorners(_frame1, _patternSize, _corners1, CalibCbType.AdaptiveThresh | CalibCbType.FastCheck | CalibCbType.NormalizeImage);
+                _find2 = CvInvoke.FindChessboardCorners(_frame2, _patternSize, _corners2, CalibCbType.AdaptiveThresh | CalibCbType.FastCheck | CalibCbType.NormalizeImage);
+                //we use this loop so we can show a colour image rather than a gray:
+                if (_find1 && _find2) //chess board found in one of the frames?
+                {
+                    //make mesurments more accurate by using FindCornerSubPixel
+                    CvInvoke.CornerSubPix(_grayFrame1, _corners1, new Size(11, 11), new Size(-1, -1), new MCvTermCriteria(30, 0.1));
+                    CvInvoke.CornerSubPix(_grayFrame2, _corners2, new Size(11, 11), new Size(-1, -1), new MCvTermCriteria(30, 0.1));
+
+                    if (start_Flag) // start right away.
+                    {
+                        //save the calculated points into an array
+                        _frameArrayBuffer[_frameBufferSavepoint] = _grayFrame1; //store the image
+                        _frameBufferSavepoint++; //increase buffer positon
+
+                        //check the state of buffer
+                        if (buffer_savepoint == buffer_length) currentMode = Mode.Caluculating_Stereo_Intrinsics; //buffer full
+
+                        //Show state of Buffer
+                        UpdateTitle("Form1: Buffer " + buffer_savepoint.ToString() + " of " + buffer_length.ToString());
+                    }
+
+                }
+
+
+
+
+
+
+
+
+
+
+
                 //Find the chessboard in bothe images
                 /////////////corners_Left = CameraCalibration.FindChessboardCorners(Gray_frame_S1, patternSize, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH);
                 /////////////corners_Right = CameraCalibration.FindChessboardCorners(Gray_frame_S2, patternSize, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH);
 
                 //we use this loop so we can show a colour image rather than a gray: //CameraCalibration.DrawChessboardCorners(Gray_Frame, patternSize, corners);
                 //we we only do this is the chessboard is present in both images
+                /*
                 if (corners_Left != null && corners_Right != null) //chess board found in one of the frames?
                 {
                     //make mesurments more accurate by using FindCornerSubPixel
@@ -180,6 +280,7 @@ namespace StereoImaging
                 }
                 corners_Left = null;
                 corners_Right = null;
+                */
             }
             #endregion
             #region Calculating Stereo Cameras Relationship
@@ -244,8 +345,11 @@ namespace StereoImaging
             }
             #endregion
             //display image
-            Video_Source1.Image = frame_S1.ToBitmap();
-            Video_Source2.Image = frame_S2.ToBitmap();
+            //Video_Source1.Image = frame_S1.ToBitmap();
+            //Video_Source2.Image = frame_S2.ToBitmap();
+
+            Video_Source1.Image = _frame1.Bitmap;
+            Video_Source2.Image = _frame2.Bitmap;
 
 
         }
