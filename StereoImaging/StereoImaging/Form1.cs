@@ -40,7 +40,7 @@ namespace StereoImaging
         int _frameBufferSavepoint;
         int _width; //width of chessboard no. squares in width - 1
         int _height; // heght of chess board no. squares in heigth - 1
-        private float _squareSize;
+        //private float _squareSize;
 
 
 
@@ -55,14 +55,14 @@ namespace StereoImaging
         #region Image Processing
 
         //Frames
-        Image<Bgr, Byte> frame_S1;
-        Image<Gray, Byte> Gray_frame_S1;
-        Image<Bgr, Byte> frame_S2;
-        Image<Gray, Byte> Gray_frame_S2;
+        //Image<Bgr, Byte> frame_S1;
+        //Image<Gray, Byte> Gray_frame_S1;
+        //Image<Bgr, Byte> frame_S2;
+        //Image<Gray, Byte> Gray_frame_S2;
 
         //Chessboard detection
-        const int width = 9;//9 //width of chessboard no. squares in width - 1
-        const int height = 6;//6 // heght of chess board no. squares in heigth - 1
+        const int width = 6;//9 //width of chessboard no. squares in width - 1
+        const int height = 3;//6 // heght of chess board no. squares in heigth - 1
         Size patternSize = new Size(width, height); //size of chess board to be detected
         Bgr[] line_colour_array = new Bgr[width * height]; // just for displaying coloured lines of detected chessboard
         PointF[] corners_Left;
@@ -70,8 +70,9 @@ namespace StereoImaging
         bool start_Flag = true; //start straight away
 
         //buffers
-        static int buffer_length = 100; //define the aquasition length of the buffer 
-        int buffer_savepoint = 0; //tracks the filled partition of the buffer
+        static int buffer_length = 25; //define the aquasition length of the buffer 
+
+        //int buffer_savepoint = 0; //tracks the filled partition of the buffer
         MCvPoint3D32f[][] corners_object_Points = new MCvPoint3D32f[buffer_length][]; //stores the calculated size for the chessboard
         PointF[][] corners_points_Left = new PointF[buffer_length][];//stores the calculated points from chessboard detection Camera 1
         PointF[][] corners_points_Right = new PointF[buffer_length][];//stores the calculated points from chessboard detection Camera 2
@@ -131,7 +132,7 @@ namespace StereoImaging
                 //if (WebCams.Length > 2) MessageBox.Show("More than 2 cameras detected. Stero Imaging will be performed using " + WebCams[0].Device_Name + " and " + WebCams[1].Device_Name);
                 //_Capture1 = new VideoCapture(WebCams[0].Device_ID);
                 //_Capture2 = new VideoCapture(WebCams[1].Device_ID);
-                _Capture1 = new VideoCapture(0);
+                _Capture1 = new VideoCapture(2);
                 _Capture2 = new VideoCapture(1);
                 //We will only use 1 frame ready event this is not really safe but it fits the purpose
                 _Capture1.ImageGrabbed += ProcessFrame;
@@ -147,9 +148,9 @@ namespace StereoImaging
             _frameArrayBuffer = new Mat[(int) 10]; //???????????????????????????????????????????
             _frameBufferSavepoint = 0;
 
-            _width = (int) 9; //width of chessboard no. squares in width - 1
-            _height = (int) 6; // heght of chess board nos. squares in heigth - 1
-            _squareSize = (float) 4.72; 
+            _width = (int) 6; //width of chessboard no. squares in width - 1
+            _height = (int) 3; // heght of chess board nos. squares in heigth - 1
+            //_squareSize = (float) 4.72; 
             _patternSize = new Size(_width, _height); //size of chess board to be detected
 
         }
@@ -195,13 +196,19 @@ namespace StereoImaging
 
 
             /////////////////////// CHESS BOARD CALIBRATION /////////////////////////////////////////////////////////////////////
-
+            //////// CAMERA CALIBRATION EXAMPLE ///////////////////////////////////////////////////////
             #region Saving Chessboard Corners in Buffer
             if (currentMode == Mode.SavingFrames)
             {
-                //////// CAMERA CALIBRATION EXAMPLE ///////////////////////////////////////////////////////
-                _find1 = CvInvoke.FindChessboardCorners(_frame1, _patternSize, _corners1, CalibCbType.AdaptiveThresh | CalibCbType.FastCheck | CalibCbType.NormalizeImage);
-                _find2 = CvInvoke.FindChessboardCorners(_frame2, _patternSize, _corners2, CalibCbType.AdaptiveThresh | CalibCbType.FastCheck | CalibCbType.NormalizeImage);
+
+                _find1 = CvInvoke.FindChessboardCorners(_frame1, 
+                                                        _patternSize,   // height, width of the checkerboard squares
+                                                        _corners1,      // output the chessboard corners (VectorOfPointF)
+                                                        CalibCbType.AdaptiveThresh | CalibCbType.FastCheck | CalibCbType.NormalizeImage);
+                _find2 = CvInvoke.FindChessboardCorners(_frame2, 
+                                                        _patternSize,   
+                                                        _corners2,      // output the chessboard corners (VectorOfPointF)
+                                                        CalibCbType.AdaptiveThresh | CalibCbType.FastCheck | CalibCbType.NormalizeImage);
                 //we use this loop so we can show a colour image rather than a gray:
                 if (_find1 && _find2) //chess board found in one of the frames?
                 {
@@ -211,18 +218,52 @@ namespace StereoImaging
 
                     if (start_Flag) // start right away.
                     {
+
+
+                        ////////////////////////////////////////// FROM STEREO CALIBRATION /// HOPE!
+                        corners_Left = _corners1.ToArray();
+                        corners_Right = _corners2.ToArray();
+                        corners_points_Left[_frameBufferSavepoint] = corners_Left;
+                        corners_points_Right[_frameBufferSavepoint] = corners_Right;
+
+
+
+
+
+
+
                         //save the calculated points into an array
-                        _frameArrayBuffer[_frameBufferSavepoint] = _grayFrame1; //store the image
+                        //_frameArrayBuffer[_frameBufferSavepoint] = _grayFrame1; //store the image
                         _frameBufferSavepoint++; //increase buffer positon
 
                         //check the state of buffer
-                        if (buffer_savepoint == buffer_length) currentMode = Mode.Caluculating_Stereo_Intrinsics; //buffer full
+                        if (_frameBufferSavepoint == buffer_length)
+                            currentMode = Mode.Caluculating_Stereo_Intrinsics; //buffer full
 
                         //Show state of Buffer
-                        UpdateTitle("Form1: Buffer " + buffer_savepoint.ToString() + " of " + buffer_length.ToString());
+                        UpdateTitle("Form1: Buffer " + _frameBufferSavepoint.ToString() + " of " + buffer_length.ToString());
                     }
 
+
+                    //draw the results
+                    CvInvoke.DrawChessboardCorners(_frame1, _patternSize, _corners1, _find1);
+                    CvInvoke.DrawChessboardCorners(_frame2, _patternSize, _corners2, _find2);
+                    string msg = string.Format("{0}/{1}", _frameBufferSavepoint + 1, _frameArrayBuffer.Length);
+
+                    int baseLine = 0;
+                    var textOrigin = new Point(_frame1.Cols - 2 * 120 - 10, _frame1.Rows - 2 * baseLine - 10);
+                    CvInvoke.PutText(_frame1, msg, textOrigin, FontFace.HersheyPlain, 3, new MCvScalar(0, 0, 255), 2);
+
+
+                    //calibrate the delay bassed on size of buffer
+                    //if buffer small you want a big delay if big small delay
+                    //Thread.Sleep(1000); //allow the user to move the board to a different position
+
                 }
+                _corners1 = new VectorOfPointF();
+                _find1 = false;
+                _corners2 = new VectorOfPointF();
+                _find2 = false;
 
 
 
@@ -231,9 +272,7 @@ namespace StereoImaging
 
 
 
-
-
-
+                ////////////// STEREO CAMERA EXAMPLE /////////////////////////////////////////////////////////////////////
                 //Find the chessboard in bothe images
                 /////////////corners_Left = CameraCalibration.FindChessboardCorners(Gray_frame_S1, patternSize, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH);
                 /////////////corners_Right = CameraCalibration.FindChessboardCorners(Gray_frame_S2, patternSize, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH);
@@ -281,15 +320,36 @@ namespace StereoImaging
                 corners_Left = null;
                 corners_Right = null;
                 */
+
+
+
+                ////////////// STEREO CAMERA EXAMPLE /////////////////////////////////////////////////////////////////////
+                ////draw the results
+                //frame_S1.Draw(new CircleF(corners_Left[0], 3), new Bgr(Color.Yellow), 1);
+                //frame_S2.Draw(new CircleF(corners_Right[0], 3), new Bgr(Color.Yellow), 1);
+                //for (int i = 1; i < corners_Left.Length; i++)
+                //{
+                //    //left
+                //    frame_S1.Draw(new LineSegment2DF(corners_Left[i - 1], corners_Left[i]), line_colour_array[i], 2);
+                //    frame_S1.Draw(new CircleF(corners_Left[i], 3), new Bgr(Color.Yellow), 1);
+                //    //right
+                //    frame_S2.Draw(new LineSegment2DF(corners_Right[i - 1], corners_Right[i]), line_colour_array[i], 2);
+                //    frame_S2.Draw(new CircleF(corners_Right[i], 3), new Bgr(Color.Yellow), 1);
+                //}
+                ////calibrate the delay bassed on size of buffer
+                ////if buffer small you want a big delay if big small delay
+                //Thread.Sleep(100);//allow the user to move the board to a different position
             }
             #endregion
+
+            // STEREO INTRINSICS - FINDING THE CAMERA RELATIONSHIP ///////////////////////////////////////
             #region Calculating Stereo Cameras Relationship
             if (currentMode == Mode.Caluculating_Stereo_Intrinsics)
             {
                 //fill the MCvPoint3D32f with correct mesurments
-                for (int k = 0; k < buffer_length; k++)
+                for (int k = 0; k < _frameBufferSavepoint; k++)
                 {
-                    //Fill our objects list with the real world mesurments for the intrinsic calculations
+                    //Fill our objects list with the real world measurments for the intrinsic calculations
                     List<MCvPoint3D32f> object_list = new List<MCvPoint3D32f>();
                     for (int i = 0; i < height; i++)
                     {
@@ -302,20 +362,176 @@ namespace StereoImaging
                 }
                 //If Emgu.CV.CvEnum.CALIB_TYPE == CV_CALIB_USE_INTRINSIC_GUESS and/or CV_CALIB_FIX_ASPECT_RATIO are specified, some or all of fx, fy, cx, cy must be initialized before calling the function
                 //if you use FIX_ASPECT_RATIO and FIX_FOCAL_LEGNTH options, these values needs to be set in the intrinsic parameters before the CalibrateCamera function is called. Otherwise 0 values are used as default.
-                
-                
-                ////////////////////////////////////
-                //CameraCalibration.StereoCalibrate(corners_object_Points, corners_points_Left, corners_points_Right, IntrinsicCam1, IntrinsicCam2, frame_S1.Size,
-                //                                                 Emgu.CV.CvEnum.CALIB_TYPE.DEFAULT, new MCvTermCriteria(0.1e5), 
-                //                                                 out EX_Param, out fundamental, out essential);
+
+
+                //////////////////////////////////// STEREO CAMERA EXAMPLE ///////////////////////////////////////
+                try
+                {
+                    CameraCalibration.StereoCalibrate(corners_object_Points,
+                                                      corners_points_Left,
+                                                      corners_points_Right,
+                                                      IntrinsicCam1, 
+                                                      IntrinsicCam2,
+                                                      _frame1.Size,
+                                                      CalibType.Default,
+                                                                    //Emgu.CV.CvEnum.CALIB_TYPE.DEFAULT, 
+                                                      new MCvTermCriteria(0.1e5),
+                                                      out EX_Param, out fundamental, out essential);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                // My Attempts 
+                //CameraCalibration.StereoCalibrate(corners_object_Points, corners_points_Left, corners_points_Right, IntrinsicCam1, IntrinsicCam2, _frame1.Size,
+                //                                                CalibType.Default,
+                //                                                //Emgu.CV.CvEnum.CALIB_TYPE.DEFAULT, 
+                //                                                new MCvTermCriteria(0.1e5),
+                //                                                out EX_Param, out fundamental, out essential);
+
+
+                // My ATTEMPTS /////////////////////////////////////////
+                //CvInvoke.StereoCalibrate(corners_object_Points,
+                //                        _corners1,
+                //                        _corners2,
+                //                         //corners_points_Left, 
+                //                         //corners_points_Right, 
+                //                         IntrinsicCam1,
+                //                         //IntrinsicCam2, 
+                //                         _frame1.Size,
+                //                         CalibType.Default,
+                //                         new MCvTermCriteria(0.1e5),
+                //                         out EX_Param,
+                //                         out fundamental,
+                //                         out essential);
+
+                //try
+                //{
+                //    var extrinsicParams = new ExtrinsicCameraParameters(); // output
+                //    var essentialMatrix = new Matrix<double>(3, 3);
+                //    var foundamentalMatrix = new Matrix<double>(3, 3);
+                //    VectorOfVectorOfPoint3D32F objectPointVec = new VectorOfVectorOfPoint3D32F(corners_object_Points);
+                //    VectorOfVectorOfPointF imagePoints1Vec = new VectorOfVectorOfPointF(corners_points_Left);
+                //    VectorOfVectorOfPointF imagePoints2Vec = new VectorOfVectorOfPointF(corners_points_Right);
+                //    CvInvoke.StereoCalibrate(
+                //       objectPointVec,
+                //       imagePoints1Vec,
+                //       imagePoints2Vec,
+                //       // Image: (intrinsic/internal camera parameters)
+                //       IntrinsicCam1.IntrinsicMatrix,
+                //       IntrinsicCam1.DistortionCoeffs,
+                //       IntrinsicCam2.IntrinsicMatrix,
+                //       IntrinsicCam2.DistortionCoeffs,
+                //       _frame1.Size,                        // imageSize,
+                //                                            // World: (extrinsic/external camera parameters)
+                //       extrinsicParams.RotationVector,      // Output
+                //       extrinsicParams.TranslationVector,   // Output
+                //       essentialMatrix,
+                //       foundamentalMatrix,
+                //       CalibType.Default, //flags,
+                //       new MCvTermCriteria(0.1e5)); // termCrit);
+                //}
+                //catch (Exception ex)
+                //{
+
+                //}
 
 
 
 
-                MessageBox.Show("Intrinsic Calculation Complete"); //display that the mothod has been succesful
-                //currentMode = Mode.Calibrated;
+                ///// GITHUB EXAMPLE ////////////////////////////////////
+                // ref: https://github.com/neutmute/emgucv/blob/master/Emgu.CV/CameraCalibration/CameraCalibration.cs
+                // ref: http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/EPSRC_SSAZ/node3.html
 
-                //Computes rectification transforms for each head of a calibrated stereo camera.
+                // OPENCV Stereo Calibration
+                // The function estimates transformation between two cameras making a stereo pair.
+                //
+                // ref: https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#stereocalibrate
+                // 
+                // Parameters:
+                // objectPoints  – Vector of vectors of the calibration pattern points.
+                // imagePoints1  – Vector of vectors of the projections of the calibration pattern points, observed by the first camera.
+                // imagePoints2  – Vector of vectors of the projections of the calibration pattern points, observed by the second camera.
+                // cameraMatrix1 – Input / output first camera matrix:  ,  . If any of CV_CALIB_USE_INTRINSIC_GUESS, CV_CALIB_FIX_ASPECT_RATIO, CV_CALIB_FIX_INTRINSIC, or CV_CALIB_FIX_FOCAL_LENGTH are specified, some or all of the matrix components must be initialized. See the flags description for details.
+                // distCoeffs1   – Input / output vector of distortion coefficients  of 4, 5, or 8 elements.The output vector length depends on the flags.
+                // cameraMatrix2 – Input / output second camera matrix.The parameter is similar to cameraMatrix1.
+                // distCoeffs2   – Input / output lens distortion coefficients for the second camera.The parameter is similar to distCoeffs1.
+                // imageSize     – Size of the image used only to initialize intrinsic camera matrix.
+                // R – Output rotation matrix between the 1st and the 2nd camera coordinate systems.
+                // T – Output translation vector between the coordinate systems of the cameras.
+                // E – Output essential matrix.
+                // F – Output fundamental matrix.
+                // term_crit – Termination criteria for the iterative optimization algorithm.
+                // flags – 
+
+                // Different flags that may be zero or a combination of the following values:
+                // CV_CALIB_FIX_INTRINSIC Fix cameraMatrix ? and distCoeffs ? so that only R, T, E, and F matrices are estimated.
+                // CV_CALIB_USE_INTRINSIC_GUESS Optimize some or all of the intrinsic parameters according to the specified flags.Initial values are provided by the user.
+                // CV_CALIB_FIX_PRINCIPAL_POINT Fix the principal points during the optimization.
+                // CV_CALIB_FIX_FOCAL_LENGTH Fix  and.
+                // CV_CALIB_FIX_ASPECT_RATIO Optimize.Fix the ratio.
+                // CV_CALIB_SAME_FOCAL_LENGTH Enforce  and.
+                // CV_CALIB_ZERO_TANGENT_DIST Set tangential distortion coefficients for each camera to zeros and fix there.
+                // CV_CALIB_FIX_K1,..., CV_CALIB_FIX_K6 Do not change the corresponding radial distortion coefficient during the optimization.If CV_CALIB_USE_INTRINSIC_GUESS is set, the coefficient from the supplied distCoeffs matrix is used.Otherwise, it is set to 0.
+                // CV_CALIB_RATIONAL_MODEL Enable coefficients k4, k5, and k6.To provide the backward compatibility, this extra flag should be explicitly specified to make the calibration function use the rational model and return 8 coefficients.If the flag is not set, the function computes and returns only 5 distortion coefficients.
+
+                //using (VectorOfVectorOfPoint3D32F objectPointVec = new VectorOfVectorOfPoint3D32F(corners_object_Points)) //stores the calculated size for the chessboard
+                //using (VectorOfVectorOfPointF imagePoints1Vec = new VectorOfVectorOfPointF(_corners1))
+                //using (VectorOfVectorOfPointF imagePoints2Vec = new VectorOfVectorOfPointF(_corners2))
+                //{
+                //    var extrinsicParams = new ExtrinsicCameraParameters(); // output
+                //    var essentialMatrix = new Matrix<double>(3, 3);
+                //    var foundamentalMatrix = new Matrix<double>(3, 3);
+
+                //    CvInvoke.StereoCalibrate(
+                //       objectPointVec,
+                //       imagePoints1Vec,
+                //       imagePoints2Vec,
+                //       // Image: (intrinsic/internal camera parameters)
+                //       IntrinsicCam1.IntrinsicMatrix,
+                //       IntrinsicCam1.DistortionCoeffs,
+                //       IntrinsicCam2.IntrinsicMatrix,
+                //       IntrinsicCam2.DistortionCoeffs,
+                //       _frame1.Size,                        // imageSize,
+                //       // World: (extrinsic/external camera parameters)
+                //       extrinsicParams.RotationVector,      // Output
+                //       extrinsicParams.TranslationVector,   // Output
+                //       essentialMatrix,                         
+                //       foundamentalMatrix,
+                //       CalibType.Default, //flags,
+                //       new MCvTermCriteria(0.1e5)); // termCrit);
+                //}
+                ///// GITHUB EXAMPLE ////////////////////////////////////
+
+
+
+
+
+
+                //MessageBox.Show("Intrinsic Calculation Complete"); //display that the mothod has been succesful
+                                                                   //currentMode = Mode.Calibrated;
+
+
+                ///////// STEREO RECTIFY? /////////////////////////////////////////////////
+                ////Computes rectification transforms for each head of a calibrated stereo camera.
+                CvInvoke.StereoRectify(IntrinsicCam1.IntrinsicMatrix,
+                                       IntrinsicCam1.DistortionCoeffs,
+                                       IntrinsicCam2.IntrinsicMatrix,
+                                       IntrinsicCam2.DistortionCoeffs,
+                                         _frame1.Size,
+                                         EX_Param.RotationVector.RotationMatrix, 
+                                         EX_Param.TranslationVector,
+                                         R1,
+                                         R2,
+                                         P1,
+                                         P2,
+                                         Q,
+                                         StereoRectifyType.Default,
+                                         0,
+                                         _frame1.Size, ref Rec1, ref Rec2);
+
+                //////Computes rectification transforms for each head of a calibrated stereo camera.
                 //CvInvoke.cvStereoRectify(IntrinsicCam1.IntrinsicMatrix, IntrinsicCam2.IntrinsicMatrix,
                 //                         IntrinsicCam1.DistortionCoeffs, IntrinsicCam2.DistortionCoeffs,
                 //                         frame_S1.Size,
@@ -335,13 +551,22 @@ namespace StereoImaging
             {
                 Image<Gray, short> disparityMap;
 
-                Computer3DPointsFromStereoPair(Gray_frame_S1, Gray_frame_S2, out disparityMap, out _points);
+                Computer3DPointsFromStereoPair(_grayFrame1, _grayFrame2, out disparityMap, out _points);
+                //Computer3DPointsFromStereoPair(Gray_frame_S1, Gray_frame_S2, out disparityMap, out _points);
+
+                // all black
+                // https://stackoverflow.com/questions/39753142/disparity-map-in-emgu-cv
+
 
                 //Display the disparity map
                 DisparityMap.Image = disparityMap.ToBitmap();
+                //DisparityMap.Image = _frame1.Bitmap;
+
                 //Draw the accurate area
-                frame_S1.Draw(Rec1, new Bgr(Color.LimeGreen), 1);
-                frame_S2.Draw(Rec2, new Bgr(Color.LimeGreen), 1);
+                _frame1.ToImage<Bgr, Byte>().Draw(Rec1, new Bgr(Color.LimeGreen), 1);
+                _frame2.ToImage<Bgr, Byte>().Draw(Rec2, new Bgr(Color.LimeGreen), 1);
+                //frame_S1.Draw(Rec1, new Bgr(Color.LimeGreen), 1);
+                //frame_S2.Draw(Rec2, new Bgr(Color.LimeGreen), 1);
             }
             #endregion
             //display image
@@ -350,6 +575,9 @@ namespace StereoImaging
 
             Video_Source1.Image = _frame1.Bitmap;
             Video_Source2.Image = _frame2.Bitmap;
+
+            if(currentMode == Mode.SavingFrames)
+                Thread.Sleep(500); //allow the user to move the board to a different position
 
 
         }
@@ -361,7 +589,8 @@ namespace StereoImaging
         /// <param name="right">The right image</param>
         /// <param name="disparityMap">The left disparity map</param>
         /// <param name="points">The 3D point cloud within a [-0.5, 0.5] cube</param>
-        private void Computer3DPointsFromStereoPair(Image<Gray, Byte> left, Image<Gray, Byte> right, out Image<Gray, short> disparityMap, out MCvPoint3D32f[] points)
+        //private void Computer3DPointsFromStereoPair(Image<Gray, Byte> left, Image<Gray, Byte> right, out Image<Gray, short> disparityMap, out MCvPoint3D32f[] points)
+        private void Computer3DPointsFromStereoPair(Mat left, Mat right, out Image<Gray, short> disparityMap, out MCvPoint3D32f[] points)
         {
             Size size = left.Size;
 
@@ -416,8 +645,8 @@ namespace StereoImaging
             using (StereoSGBM stereoSolver = new StereoSGBM(minDispatities, numDisparities, SAD, P1, P2, disp12MaxDiff, PreFilterCap, UniquenessRatio, Speckle, SpeckleRange, 0))
             //using (StereoBM stereoSolver = new StereoBM(Emgu.CV.CvEnum.STEREO_BM_TYPE.BASIC, 0))
             {
-                //////////////////stereoSolver.FindStereoCorrespondence(left, right, disparityMap);//Computes the disparity map using: 
-
+                //stereoSolver.FindStereoCorrespondence(left, right, disparityMap);//Computes the disparity map using: 
+                stereoSolver.Compute(left, right, disparityMap);
                 /*GC: graph cut-based algorithm
                   BM: block matching algorithm
                   SGBM: modified H. Hirschmuller algorithm HH08*/
