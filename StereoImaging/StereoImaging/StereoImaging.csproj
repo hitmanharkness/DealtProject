@@ -91,6 +91,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="checker_pattern_9x7.png" />
+    <Content Include="imL.png" />
+    <Content Include="imR.png" />
     <Content Include="Lib\DirectShowLib-2005.dll" />
     <Content Include="Lib\Emgu.CV.dll" />
     <Content Include="Lib\Emgu.CV.GPU.dll" />
@@ -101,6 +104,8 @@
     <Content Include="Lib\Emgu.CV.VideoStab.dll" />
     <Content Include="Lib\Emgu.CV.World.dll" />
     <Content Include="Lib\Emgu.Util.dll" />
+    <Content Include="TestImage1.png" />
+    <Content Include="TestImage2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -39,12 +39,6 @@ C:\Users\tharknes\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\
 C:\Users\tharknes\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\Emgu.CV.UI.dll
 C:\Users\tharknes\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\Emgu.CV.World.dll
 C:\Users\tharknes\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.csprojResolveAssemblyReference.cache
-C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.Form1.resources
-C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.Properties.Resources.resources
-C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.csproj.GenerateResource.Cache
-C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.csproj.CoreCompileInputs.cache
-C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.exe
-C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.pdb
 C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\StereoImaging.exe
 C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\StereoImaging.pdb
 C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\DirectShowLib-2005.dll
@@ -52,3 +46,10 @@ C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\Em
 C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\Emgu.CV.World.dll
 C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\Emgu.CV.UI.pdb
 C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\Emgu.CV.UI.xml
+C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.Form1.resources
+C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.Properties.Resources.resources
+C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.csproj.GenerateResource.Cache
+C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.csproj.CoreCompileInputs.cache
+C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.exe
+C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.pdb
+C:\Users\terril\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.csprojResolveAssemblyReference.cache
