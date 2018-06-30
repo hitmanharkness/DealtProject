@@ -88,3 +88,5 @@ C:\Users\hitma\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\tr\
 C:\Users\hitma\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\zh-cn\ZedGraph.resources.dll
 C:\Users\hitma\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\zh-tw\ZedGraph.resources.dll
 C:\Users\hitma\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\obj\x86\Debug\StereoImaging.csproj.CopyComplete
+C:\Users\hitma\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\Lib\cvextern.dll
+C:\Users\hitma\Documents\GitHub\DealtProject\StereoImaging\StereoImaging\bin\OpenCv\cvextern.dll

@@ -1,0 +1,17 @@
+﻿
+ERRORS SUCH AS:
+
+System.TypeInitializationException: 'The type initializer for 'Emgu.CV.Util.VectorOfPointF' threw an exception.'
+Inner Exception
+DllNotFoundException: Unable to load DLL 'cvextern': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+
+
+You will need the opencv compiled cpp libraries.
+
+If you have installed the emgu cv examples solutions, they will be placed in a shared libs directory to copy from.
+
+C:\Emgu\emgucv-windesktop 3.4.1.2976\libs\x64
+
+I copy it to the bin directory. For some reason I can't get it to copy to the bin directory from that project.
+
+
