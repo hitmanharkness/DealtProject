@@ -1,0 +1,8 @@
+C:\Users\hitma\Desktop\Dealt\dealt-realsense\dealt-realsense\dealt-realsense\bin\x86\Debug\lib\realsense2.dll
+C:\Users\hitma\Desktop\Dealt\dealt-realsense\dealt-realsense\dealt-realsense\bin\x86\Debug\dealt-realsense.exe
+C:\Users\hitma\Desktop\Dealt\dealt-realsense\dealt-realsense\dealt-realsense\bin\x86\Debug\dealt-realsense.pdb
+C:\Users\hitma\Desktop\Dealt\dealt-realsense\dealt-realsense\dealt-realsense\bin\x86\Debug\Intel.RealSense.dll
+C:\Users\hitma\Desktop\Dealt\dealt-realsense\dealt-realsense\dealt-realsense\obj\x86\Debug\dealt-realsense.csproj.CoreCompileInputs.cache
+C:\Users\hitma\Desktop\Dealt\dealt-realsense\dealt-realsense\dealt-realsense\obj\x86\Debug\dealt-realsense.csproj.CopyComplete
+C:\Users\hitma\Desktop\Dealt\dealt-realsense\dealt-realsense\dealt-realsense\obj\x86\Debug\dealt-realsense.exe
+C:\Users\hitma\Desktop\Dealt\dealt-realsense\dealt-realsense\dealt-realsense\obj\x86\Debug\dealt-realsense.pdb

@@ -18,3 +18,13 @@ C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1
 C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.csproj.CoreCompileInputs.cache
 C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.exe
 C:\Users\tharknes\Desktop\DEALT\AdruinoTest1\AdruinoTest1\obj\Debug\AdruinoTest1.pdb
+C:\Users\hitma\Documents\GitHub\DealtProject\AdruinoSocket\AdruinoTest1\bin\Debug\AdruinoTest1.exe.config
+C:\Users\hitma\Documents\GitHub\DealtProject\AdruinoSocket\AdruinoTest1\bin\Debug\AdruinoTest1.exe
+C:\Users\hitma\Documents\GitHub\DealtProject\AdruinoSocket\AdruinoTest1\bin\Debug\AdruinoTest1.pdb
+C:\Users\hitma\Documents\GitHub\DealtProject\AdruinoSocket\AdruinoTest1\obj\Debug\AdruinoTest1.csprojAssemblyReference.cache
+C:\Users\hitma\Documents\GitHub\DealtProject\AdruinoSocket\AdruinoTest1\obj\Debug\AdruinoTest1.Form1.resources
+C:\Users\hitma\Documents\GitHub\DealtProject\AdruinoSocket\AdruinoTest1\obj\Debug\AdruinoTest1.Properties.Resources.resources
+C:\Users\hitma\Documents\GitHub\DealtProject\AdruinoSocket\AdruinoTest1\obj\Debug\AdruinoTest1.csproj.GenerateResource.cache
+C:\Users\hitma\Documents\GitHub\DealtProject\AdruinoSocket\AdruinoTest1\obj\Debug\AdruinoTest1.csproj.CoreCompileInputs.cache
+C:\Users\hitma\Documents\GitHub\DealtProject\AdruinoSocket\AdruinoTest1\obj\Debug\AdruinoTest1.exe
+C:\Users\hitma\Documents\GitHub\DealtProject\AdruinoSocket\AdruinoTest1\obj\Debug\AdruinoTest1.pdb

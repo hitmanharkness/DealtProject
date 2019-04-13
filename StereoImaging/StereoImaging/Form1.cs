@@ -68,7 +68,7 @@ namespace StereoImaging
         bool start_Flag = true; //start straight away
 
         //buffers
-        static int buffer_length = 25; //define the aquasition length of the buffer 
+        static int buffer_length = 100; //define the aquasition length of the buffer 
 
         //int buffer_savepoint = 0; //tracks the filled partition of the buffer
         MCvPoint3D32f[][] corners_object_Points = new MCvPoint3D32f[buffer_length][]; //stores the calculated size for the chessboard
